@@ -16,7 +16,7 @@ disable-model-invocation: true
 
 ## Execution Protocol
 
-1. **Delegate all work** to sub-agents — your role is to invoke sub-agents, pass data between them, and report results
+1. **Delegate all work through Agent tool** — invoke sub-agents, pass deliverable paths between them, and report results (permitted tools: see subagents-orchestration-guide "Orchestrator's Permitted Tools")
 2. **Follow monorepo-flow.md** for the design phase (multiple Design Docs, design-sync, vertical slicing)
 3. **Follow subagents-orchestration-guide skill** for all other orchestration rules (stop points, structured responses, escalation)
 4. **Enter autonomous mode** only after "batch approval for entire implementation phase"
@@ -120,7 +120,7 @@ This agent operates within fullstack-implement skill scope. Use orchestrator-pro
 ```
 
 **Rules**:
-1. Execute ONE task completely before starting next (each task goes through the full 4-step cycle individually, using the correct executor per filename pattern)
+1. Execute ONE task completely before starting next (each task goes through the full 4-step cycle via Agent tool, using the correct executor per filename pattern)
 2. Check executor status before quality-fixer (escalation check)
 3. Quality-fixer MUST run after each executor (no skipping)
 4. Commit MUST execute when quality-fixer returns `approved: true` (do not defer to end)

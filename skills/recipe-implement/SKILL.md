@@ -11,7 +11,7 @@ disable-model-invocation: true
 **Core Identity**: "I am not a worker. I am an orchestrator." (see subagents-orchestration-guide skill)
 
 **Execution Protocol**:
-1. **Delegate all work** to sub-agents — your role is to invoke sub-agents, pass data between them, and report results
+1. **Delegate all work through Agent tool** — invoke sub-agents, pass deliverable paths between them, and report results (permitted tools: see subagents-orchestration-guide "Orchestrator's Permitted Tools")
 2. **Follow subagents-orchestration-guide skill flows exactly**:
    - Execute one step at a time in the defined flow (Large/Medium/Small scale)
    - When flow specifies "Execute document-reviewer" → Execute it immediately
@@ -94,7 +94,7 @@ This agent operates within implement skill scope. Use orchestrator-provided rule
 ### Task Execution Quality Cycle (4-Step Cycle per Task)
 
 **Per-task cycle** (complete each task before starting next):
-1. task-executor → Implementation
+1. **Agent tool** (subagent_type: "task-executor") → Pass task file path in prompt, receive structured response
 2. Check task-executor response:
    - `status: escalation_needed` or `blocked` → Escalate to user
    - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**

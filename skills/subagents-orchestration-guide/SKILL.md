@@ -115,10 +115,24 @@ Autonomous execution MUST stop and wait for user input at these points.
 ## How to Call Subagents
 
 ### Execution Method
-Call subagents using the Task tool:
-- subagent_type: Agent name
-- description: Concise task description (3-5 words)
-- prompt: Specific instructions
+All subagent invocation uses the **Agent tool** with:
+- `subagent_type`: Agent name (e.g., "task-executor")
+- `description`: Concise task description (3-5 words)
+- `prompt`: Specific instructions including deliverable paths
+
+### Orchestrator's Permitted Tools
+
+The orchestrator coordinates work using only the following tools:
+
+| Tool | Purpose |
+|------|---------|
+| Agent | Invoke subagents |
+| AskUserQuestion | User confirmations and questions |
+| TaskCreate / TaskUpdate | Progress tracking |
+| Bash | Shell operations (git commit, ls, verification commands) |
+| Read | Deliverable documents for information bridging between subagents |
+
+All implementation work (Edit, Write, MultiEdit) is performed by subagents, not the orchestrator.
 
 ### Call Example (requirement-analyzer)
 - subagent_type: "requirement-analyzer"
@@ -281,7 +295,7 @@ Stop autonomous execution and escalate to user in the following cases:
 ### Task Management: 4-Step Cycle
 
 **Per-task cycle**:
-1. task-executor → Implementation
+1. **Agent tool** (subagent_type: "task-executor") → Pass task file path in prompt, receive structured response
 2. Check task-executor response:
    - `status: escalation_needed` or `blocked` → Escalate to user
    - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**

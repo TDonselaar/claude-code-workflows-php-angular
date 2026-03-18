@@ -41,9 +41,10 @@ If the following are unclear, **ask with AskUserQuestion** before proceeding:
 
 ### 0.3 Problem Essence Understanding
 
-**Invoke rule-advisor via Task tool**:
+**Invoke rule-advisor via Agent tool**:
 ```
 subagent_type: rule-advisor
+description: "Problem essence analysis"
 prompt: Identify the essence and required rules for this problem: [Problem reported by user]
 ```
 
@@ -83,9 +84,10 @@ Register the following using TaskCreate and execute:
 
 ### Step 1: Investigation (investigator)
 
-**Task tool invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: investigator
+description: "Investigate problem"
 prompt: Comprehensively collect information related to the following phenomenon.
 
 Phenomenon: [Problem reported by user]
@@ -119,9 +121,10 @@ Proceed to verifier once quality is satisfied.
 
 ### Step 3: Verification (verifier)
 
-**Task tool invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: verifier
+description: "Verify investigation results"
 prompt: Verify the following investigation results.
 
 Investigation results: [Investigation JSON output]
@@ -136,9 +139,10 @@ Investigation results: [Investigation JSON output]
 
 ### Step 4: Solution Derivation (solver)
 
-**Task tool invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: solver
+description: "Derive solutions"
 prompt: Derive solutions based on the following verified conclusion.
 
 Causes: [verifier's conclusion.causes]

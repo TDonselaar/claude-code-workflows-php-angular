@@ -13,7 +13,7 @@ Target: $ARGUMENTS
 **Core Identity**: "I am not a worker. I am an orchestrator."
 
 **Execution Protocol**:
-1. **Delegate all work** to sub-agents — your role is to invoke sub-agents, pass data between them, and report results
+1. **Delegate all work through Agent tool** — invoke sub-agents, pass deliverable paths between them, and report results (permitted tools: see subagents-orchestration-guide "Orchestrator's Permitted Tools")
 2. **Process one step at a time**: Execute steps sequentially within each unit (2 → 3 → 4 → 5). Each step's output is the required input for the next step. Complete all steps for one unit before starting the next
 3. **Pass `$STEP_N_OUTPUT` as-is** to sub-agents — the orchestrator bridges data without processing or filtering it
 
@@ -59,9 +59,10 @@ Phase 2: Design Doc Generation (if requested)
 
 ### Step 1: PRD Scope Discovery
 
-**Task invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: scope-discoverer
+description: "Discover functional scope"
 prompt: |
   Discover functional scope targets in the codebase.
 
@@ -84,9 +85,10 @@ prompt: |
 
 #### Step 2: PRD Generation
 
-**Task invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: prd-creator
+description: "Generate PRD"
 prompt: |
   Create reverse-engineered PRD for the following feature.
 
@@ -108,9 +110,10 @@ prompt: |
 
 **Prerequisite**: $STEP_2_OUTPUT (PRD path from Step 2)
 
-**Task invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: code-verifier
+description: "Verify PRD consistency"
 prompt: |
   Verify consistency between PRD and code implementation.
 
@@ -130,9 +133,10 @@ prompt: |
 
 **Required Input**: $STEP_3_OUTPUT (verification JSON from Step 3)
 
-**Task invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: document-reviewer
+description: "Review PRD"
 prompt: |
   Review the following PRD considering code verification findings.
 
@@ -158,9 +162,10 @@ prompt: |
 - Critical discrepancies exist in `$STEP_3_OUTPUT`
 - consistencyScore < 70
 
-**Task invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: prd-creator
+description: "Revise PRD"
 prompt: |
   Update PRD based on review feedback and code verification results.
 
@@ -220,9 +225,10 @@ Map `$STEP_1_OUTPUT` units to Design Doc generation targets, carrying forward:
 
 **Standard mode (fullstack=No)**:
 
-**Task invocation**:
+**Agent tool invocation**:
 ```
 subagent_type: technical-designer
+description: "Generate Design Doc"
 prompt: |
   Create Design Doc for the following feature based on existing code.
 
@@ -248,6 +254,7 @@ For each unit, invoke 7a then 7b sequentially (7b depends on 7a output):
 **7a. Backend Design Doc**:
 ```
 subagent_type: technical-designer
+description: "Generate backend Design Doc"
 prompt: |
   Create a backend Design Doc for the following feature based on existing code.
 
@@ -270,6 +277,7 @@ prompt: |
 **7b. Frontend Design Doc**:
 ```
 subagent_type: technical-designer-frontend
+description: "Generate frontend Design Doc"
 prompt: |
   Create a frontend Design Doc for the following feature based on existing code.
 
@@ -297,9 +305,10 @@ prompt: |
 
 **Fullstack mode**: Verify each Design Doc separately.
 
-**Task invocation (per Design Doc)**:
+**Agent tool invocation (per Design Doc)**:
 ```
 subagent_type: code-verifier
+description: "Verify Design Doc consistency"
 prompt: |
   Verify consistency between Design Doc and code implementation.
 
@@ -315,9 +324,10 @@ prompt: |
 
 **Required Input**: $STEP_8_OUTPUT (verification JSON from Step 8)
 
-**Task invocation (per Design Doc)**:
+**Agent tool invocation (per Design Doc)**:
 ```
 subagent_type: document-reviewer
+description: "Review Design Doc"
 prompt: |
   Review the following Design Doc considering code verification findings.
 
@@ -346,9 +356,10 @@ prompt: |
 - Critical discrepancies exist in `$STEP_8_OUTPUT`
 - consistencyScore < 70
 
-**Task invocation (per Design Doc)**:
+**Agent tool invocation (per Design Doc)**:
 ```
 subagent_type: technical-designer (or technical-designer-frontend for frontend Design Docs)
+description: "Revise Design Doc"
 prompt: |
   Update Design Doc based on review feedback and code verification results.
 
