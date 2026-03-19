@@ -38,8 +38,8 @@ claude
 # 3. Install backend plugin
 /plugin install dev-workflows@claude-code-workflows
 
-# 4. Restart session (required)
-# Exit and restart Claude Code
+# 4. Reload plugins
+/reload-plugins
 
 # 5. Start building
 /recipe-implement <your feature>
@@ -53,7 +53,7 @@ claude
 # 3. Install frontend plugin
 /plugin install dev-workflows-frontend@claude-code-workflows
 
-# 4-5. Same as above (restart and start building)
+# 4-5. Same as above (reload plugins and start building)
 
 # Use frontend-specific commands
 /recipe-front-design <your feature>
