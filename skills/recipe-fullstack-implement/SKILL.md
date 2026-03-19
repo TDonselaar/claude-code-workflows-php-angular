@@ -53,7 +53,7 @@ Before creating the frontend Design Doc, create a UI Specification:
 - **[STOP]**: Wait for user response about prototype code availability
 
 Then invoke **ui-spec-designer**:
-- `subagent_type: "ui-spec-designer"`
+- `subagent_type: "dev-workflows-frontend:ui-spec-designer"`
 - If prototype provided: `prompt: "Create UI Spec from PRD at [path]. Prototype code is at [user-provided path]."`
 - If no prototype: `prompt: "Create UI Spec from PRD at [path]. No prototype code available."`
 
@@ -115,8 +115,8 @@ This agent operates within fullstack-implement skill scope. Use orchestrator-pro
 
 **Agent routing by task filename** (see monorepo-flow.md reference):
 ```
-*-backend-task-*   → task-executor + quality-fixer
-*-frontend-task-*  → task-executor-frontend + quality-fixer-frontend
+*-backend-task-*   → dev-workflows:task-executor + dev-workflows:quality-fixer
+*-frontend-task-*  → dev-workflows-frontend:task-executor-frontend + dev-workflows-frontend:quality-fixer-frontend
 ```
 
 **Rules**:

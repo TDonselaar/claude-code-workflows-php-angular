@@ -73,21 +73,21 @@ Create task file at `docs/plans/tasks/review-fixes-YYYYMMDD.md`
 ### Step 6: Execute Fixes
 
 Invoke task-executor using Agent tool:
-- `subagent_type`: "task-executor"
+- `subagent_type`: "dev-workflows:task-executor"
 - `description`: "Execute review fixes"
 - `prompt`: "Task file: docs/plans/tasks/review-fixes-YYYYMMDD.md. Apply staged fixes (stops at 5 files)."
 
 ### Step 7: Quality Check
 
 Invoke quality-fixer using Agent tool:
-- `subagent_type`: "quality-fixer"
+- `subagent_type`: "dev-workflows:quality-fixer"
 - `description`: "Quality gate check"
 - `prompt`: "Confirm quality gate passage for fixed files."
 
 ### Step 8: Re-validate
 
 Invoke code-reviewer using Agent tool:
-- `subagent_type`: "code-reviewer"
+- `subagent_type`: "dev-workflows:code-reviewer"
 - `description`: "Re-validate compliance"
 - `prompt`: "Re-validate Design Doc compliance after fixes. Prior compliance issues: $STEP_2_OUTPUT. Verify each prior issue is resolved."
 

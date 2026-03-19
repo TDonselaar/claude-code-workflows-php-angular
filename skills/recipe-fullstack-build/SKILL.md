@@ -61,7 +61,7 @@ Generate tasks from the work plan? (y/n):
 
 ### 2. Task Decomposition (if approved)
 Invoke task-decomposer using Agent tool:
-- `subagent_type`: "task-decomposer"
+- `subagent_type`: "dev-workflows:task-decomposer"
 - `description`: "Decompose work plan"
 - `prompt`: "Read work plan at docs/plans/[plan-name].md and decompose into atomic tasks. Output: Individual task files in docs/plans/tasks/. Granularity: 1 task = 1 commit = independently executable. Use layer-aware naming: {plan}-backend-task-{n}.md, {plan}-frontend-task-{n}.md based on Target files paths."
 
@@ -87,9 +87,9 @@ Invoke task-decomposer using Agent tool:
 
 | Filename Pattern | Executor | Quality Fixer |
 |-----------------|----------|---------------|
-| `*-backend-task-*` | task-executor | quality-fixer |
-| `*-frontend-task-*` | task-executor-frontend | quality-fixer-frontend |
-| `*-task-*` (no layer prefix) | task-executor | quality-fixer (default) |
+| `*-backend-task-*` | dev-workflows:task-executor | dev-workflows:quality-fixer |
+| `*-frontend-task-*` | dev-workflows-frontend:task-executor-frontend | dev-workflows-frontend:quality-fixer-frontend |
+| `*-task-*` (no layer prefix) | dev-workflows:task-executor | dev-workflows:quality-fixer (default) |
 
 ### Task Execution (4-Step Cycle)
 

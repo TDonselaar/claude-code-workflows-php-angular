@@ -53,7 +53,7 @@ Generate tasks from the work plan? (y/n):
 
 ### 2. Task Decomposition (if approved)
 Invoke task-decomposer using Agent tool:
-- `subagent_type`: "task-decomposer"
+- `subagent_type`: "dev-workflows:task-decomposer"
 - `description`: "Decompose work plan"
 - `prompt`: "Read work plan at docs/plans/[plan-name].md and decompose into atomic tasks. Output: Individual task files in docs/plans/tasks/. Granularity: 1 task = 1 commit = independently executable"
 
@@ -78,7 +78,7 @@ Invoke task-decomposer using Agent tool:
 
 For EACH task, YOU MUST:
 1. **Register tasks using TaskCreate**: Register work steps. Always include: first "Confirm skill constraints", final "Verify skill fidelity"
-2. **Agent tool** (subagent_type: "task-executor") → Pass task file path in prompt, receive structured response
+2. **Agent tool** (subagent_type: "dev-workflows:task-executor") → Pass task file path in prompt, receive structured response
 3. **CHECK task-executor response**:
    - `status: "escalation_needed"` or `"blocked"` → STOP and escalate to user
    - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**

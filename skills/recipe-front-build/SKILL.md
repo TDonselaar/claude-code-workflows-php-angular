@@ -60,7 +60,7 @@ Generate tasks from the work plan? (y/n):
 
 ### 2. Task Decomposition (if approved)
 Invoke task-decomposer using Agent tool:
-- `subagent_type`: "task-decomposer"
+- `subagent_type`: "dev-workflows-frontend:task-decomposer"
 - `description`: "Decompose work plan"
 - `prompt`: "Read work plan at docs/plans/[plan-name].md and decompose into atomic tasks. Output: Individual task files in docs/plans/tasks/. Granularity: 1 task = 1 commit = independently executable"
 
@@ -86,7 +86,7 @@ Invoke task-decomposer using Agent tool:
 
 ### Sub-agent Invocation Method
 Use **Agent tool** to invoke sub-agents:
-- `subagent_type`: Agent name
+- `subagent_type`: Fully qualified agent name (e.g., "dev-workflows-frontend:task-executor-frontend")
 - `description`: Brief task description (3-5 words)
 - `prompt`: Specific instructions
 
@@ -101,7 +101,7 @@ Each sub-agent responds in JSON format:
 For EACH task, YOU MUST:
 
 1. **Register tasks using TaskCreate**: Register work steps. Always include: first "Confirm skill constraints", final "Verify skill fidelity"
-2. **Agent tool** (subagent_type: "task-executor-frontend") → Pass task file path in prompt, receive structured response
+2. **Agent tool** (subagent_type: "dev-workflows-frontend:task-executor-frontend") → Pass task file path in prompt, receive structured response
 3. **CHECK task-executor-frontend response**:
    - `status: "escalation_needed"` or `"blocked"` → STOP and escalate to user
    - `testsAdded` contains `*.int.test.ts` or `*.e2e.test.ts` → Execute **integration-test-reviewer**
@@ -109,7 +109,7 @@ For EACH task, YOU MUST:
      - `approved` → Proceed to step 4
    - `readyForQualityCheck: true` → Proceed to step 4
 4. **USE quality-fixer-frontend**: Execute all quality checks (Lighthouse, bundle size, tests, etc.)
-   - Invocation example: `subagent_type: "quality-fixer-frontend"`, `description: "Quality check"`, `prompt: "Execute all frontend quality checks and fixes"`
+   - Invocation example: `subagent_type: "dev-workflows-frontend:quality-fixer-frontend"`, `description: "Quality check"`, `prompt: "Execute all frontend quality checks and fixes"`
 5. **EXECUTE commit**: After `approved: true` confirmation, execute git commit IMMEDIATELY. Use `changeSummary` for commit message.
 
 **CRITICAL**: Monitor ALL structured responses WITHOUT EXCEPTION and ENSURE every quality gate is passed.

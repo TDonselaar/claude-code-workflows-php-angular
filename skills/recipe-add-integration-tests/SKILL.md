@@ -46,7 +46,7 @@ ls $ARGUMENTS || ls docs/design/*.md | grep -v template | tail -1
 ### Step 2: Skeleton Generation
 
 Invoke acceptance-test-generator using Agent tool:
-- `subagent_type`: "acceptance-test-generator"
+- `subagent_type`: "dev-workflows:acceptance-test-generator"
 - `description`: "Generate test skeletons"
 - `prompt`: "Generate test skeletons from Design Doc at [path from Step 1]"
 
@@ -90,7 +90,7 @@ Implement test cases defined in skeleton files.
 ### Step 4: Test Implementation
 
 Invoke task-executor using Agent tool:
-- `subagent_type`: "task-executor"
+- `subagent_type`: "dev-workflows:task-executor"
 - `description`: "Implement integration tests"
 - `prompt`: "Task file: docs/plans/tasks/integration-tests-YYYYMMDD.md. Implement tests following the task file."
 
@@ -99,7 +99,7 @@ Invoke task-executor using Agent tool:
 ### Step 5: Test Review
 
 Invoke integration-test-reviewer using Agent tool:
-- `subagent_type`: "integration-test-reviewer"
+- `subagent_type`: "dev-workflows:integration-test-reviewer"
 - `description`: "Review test quality"
 - `prompt`: "Review test quality. Test files: [paths from Step 4 testsAdded]. Skeleton files: [paths from Step 2 generatedFiles]"
 
@@ -112,14 +112,14 @@ Check Step 5 result:
 - `status: needs_revision` → Invoke task-executor with requiredFixes, then return to Step 5
 
 Invoke task-executor using Agent tool:
-- `subagent_type`: "task-executor"
+- `subagent_type`: "dev-workflows:task-executor"
 - `description`: "Fix review findings"
 - `prompt`: "Fix the following issues in test files: [requiredFixes from Step 5]"
 
 ### Step 7: Quality Check
 
 Invoke quality-fixer using Agent tool:
-- `subagent_type`: "quality-fixer"
+- `subagent_type`: "dev-workflows:quality-fixer"
 - `description`: "Final quality assurance"
 - `prompt`: "Final quality assurance for test files added in this workflow. Run all tests and verify coverage."
 

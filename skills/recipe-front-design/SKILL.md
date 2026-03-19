@@ -41,7 +41,7 @@ Considering the deep impact on design, first engage in dialogue to understand th
 
 Once requirements are moderately clarified:
 - Invoke **requirement-analyzer** using Agent tool
-  - `subagent_type: "requirement-analyzer"`
+  - `subagent_type: "dev-workflows-frontend:requirement-analyzer"`
   - `description: "Requirement analysis"`
   - `prompt: "Requirements: [user requirements] Execute requirement analysis and scale determination"`
 - **[STOP]**: Review requirement analysis results and address question items
@@ -55,22 +55,22 @@ After requirement analysis approval, ask the user about prototype code:
 
 Then create the UI Specification:
 - Invoke **ui-spec-designer** using Agent tool
-  - `subagent_type: "ui-spec-designer"`
+  - `subagent_type: "dev-workflows-frontend:ui-spec-designer"`
   - `description: "UI Spec creation"`
   - If PRD exists and prototype provided: `prompt: "Create UI Spec from PRD at [path]. Prototype code is at [user-provided path]. Place prototype in docs/ui-spec/assets/{feature-name}/"`
   - If PRD exists and no prototype: `prompt: "Create UI Spec from PRD at [path]. No prototype code available."`
   - If no PRD (medium scale): `prompt: "Create UI Spec based on the following requirements: [pass requirement-analyzer output]. No PRD available."` (add prototype path if provided)
 - Invoke **document-reviewer** to verify UI Spec
-  - `subagent_type: "document-reviewer"`, `description: "UI Spec review"`, `prompt: "doc_type: UISpec target: [ui-spec path] Review for consistency and completeness"`
+  - `subagent_type: "dev-workflows-frontend:document-reviewer"`, `description: "UI Spec review"`, `prompt: "doc_type: UISpec target: [ui-spec path] Review for consistency and completeness"`
 - **[STOP]**: Present UI Spec for user approval
 
 ### Step 3: Design Document Creation Phase
 Create appropriate design documents according to scale determination:
 - Invoke **technical-designer-frontend** using Agent tool
-  - For ADR: `subagent_type: "technical-designer-frontend"`, `description: "ADR creation"`, `prompt: "Create ADR for [technical decision]"`
-  - For Design Doc: `subagent_type: "technical-designer-frontend"`, `description: "Design Doc creation"`, `prompt: "Create Design Doc based on requirements. UI Spec is at [ui-spec path]. Inherit component structure and state design from UI Spec."`
+  - For ADR: `subagent_type: "dev-workflows-frontend:technical-designer-frontend"`, `description: "ADR creation"`, `prompt: "Create ADR for [technical decision]"`
+  - For Design Doc: `subagent_type: "dev-workflows-frontend:technical-designer-frontend"`, `description: "Design Doc creation"`, `prompt: "Create Design Doc based on requirements. UI Spec is at [ui-spec path]. Inherit component structure and state design from UI Spec."`
 - Invoke **document-reviewer** to verify consistency
-  - `subagent_type: "document-reviewer"`, `description: "Document review"`, `prompt: "Review [document path] for consistency and completeness"`
+  - `subagent_type: "dev-workflows-frontend:document-reviewer"`, `description: "Document review"`, `prompt: "Review [document path] for consistency and completeness"`
 - **[STOP]**: Present design alternatives and trade-offs, obtain user approval
 
 ## Output Example
