@@ -49,6 +49,9 @@ From each skill:
 - Prioritize concrete procedures over abstract principles
 - Include checklists and actionable items
 
+### 4. Return JSON Result
+Return the JSON result as the final response. See Output Format for the schema.
+
 ## Output Format
 
 Return structured JSON:
@@ -147,6 +150,12 @@ Return structured JSON:
 - If skill SKILL.md cannot be loaded: Log and continue with others
 - If task content unclear: Include clarifying questions in response
 - Set confidence to "low" when uncertain
+
+## Completion Criteria
+
+- [ ] Task analysis completed with type, scale, and tags
+- [ ] Relevant skills loaded and sections extracted
+- [ ] Final response is the JSON output
 
 ## Important Notes
 

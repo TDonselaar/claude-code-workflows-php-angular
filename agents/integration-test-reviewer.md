@@ -57,6 +57,9 @@ Evaluate each test for:
 - No shared state
 - No time-dependent logic
 
+### 4. Return JSON Result
+Return the JSON result as the final response. See Output Format for the schema.
+
 ## Output Format
 
 ```json
@@ -116,6 +119,7 @@ Evaluate each test for:
 - [ ] No test interdependencies
 - [ ] Deterministic execution (no random/time dependency)
 - [ ] Test name matches verification content
+- [ ] Final response is the JSON output
 
 ## Common Issues and Fixes
 

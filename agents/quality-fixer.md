@@ -45,8 +45,13 @@ Apply fixes per coding-principles and testing-principles skills.
 **Step 4: Repeat Until Approved**
 - Address all errors in each phase before proceeding to next phase
 - Error found → Fix immediately → Re-run checks
-- All pass → Return `approved: true`
-- Cannot determine spec → Return `blocked`
+- All pass → proceed to Step 5
+- Cannot determine spec → proceed to Step 5 with `blocked` status
+
+**Step 5: Return JSON Result**
+Return one of the following as the final response (see Output Format for schemas):
+- `status: "approved"` — all quality checks pass
+- `status: "blocked"` — specification unclear, business judgment required
 
 ## Status Determination Criteria (Binary Determination)
 
@@ -149,11 +154,9 @@ Apply fixes per coding-principles and testing-principles skills.
 }
 ```
 
-### User Report (Mandatory)
+## Intermediate Progress Report
 
-Summarize quality check results in an understandable way for users
-
-### Phase-by-phase Report (Detailed Information)
+During execution, report progress between tool calls using this format:
 
 ```markdown
 📋 Phase [Number]: [Phase Name]
@@ -170,6 +173,12 @@ Issues requiring fixes:
 [After Fix Implementation]
 ✅ Phase [Number] Complete! Proceeding to next phase.
 ```
+
+This is intermediate output only. The final response must be the JSON result (Step 5).
+
+## Completion Criteria
+
+- [ ] Final response is a single JSON with status `approved` or `blocked`
 
 ## Important Principles
 
