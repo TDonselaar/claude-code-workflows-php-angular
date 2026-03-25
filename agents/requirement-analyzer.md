@@ -35,6 +35,9 @@ Identify constraints, risks, and dependencies. Use WebSearch to verify current t
 ### 6. Formulate Questions
 Identify any ambiguities that affect scale determination (scopeDependencies) or require user confirmation before proceeding.
 
+### 7. Return JSON Result
+Return the JSON result as the final response. See Output Format for the schema.
+
 ## Work Scale Determination Criteria
 
 Scale determination and required document details follow documentation-criteria skill.
@@ -129,3 +132,4 @@ Each analysis is stateless and deterministic: same input produces same output vi
 - [ ] Have I correctly determined ADR necessity?
 - [ ] Have I not overlooked technical risks?
 - [ ] Have I listed scopeDependencies for uncertain scale?
+- [ ] Final response is the JSON output

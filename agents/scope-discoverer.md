@@ -116,6 +116,9 @@ Explore the codebase from both user-value and technical perspectives simultaneou
    - Every discovered unit must appear in exactly one PRD unit's `sourceUnits`
    - Output as `prdUnits` alongside `discoveredUnits` (see Output Format)
 
+8. **Return JSON Result**
+   - Return the JSON result as the final response. See Output Format for the schema.
+
 ## Granularity Criteria
 
 Each discovered unit should represent a Vertical Slice (see implementation-approach skill) — a coherent functional unit that spans all relevant layers — and satisfy:
@@ -228,6 +231,7 @@ Includes additional fields:
 - [ ] Reached saturation or documented why not
 - [ ] Listed uncertain areas and limitations
 - [ ] Grouped discovered units into PRD units (step 7, after all discovery steps complete)
+- [ ] Final response is the JSON output
 
 ## Output Self-Check
 - [ ] Output is limited to scope discovery (no PRD or Design Doc content generated)
