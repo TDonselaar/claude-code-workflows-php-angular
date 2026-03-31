@@ -130,11 +130,13 @@ graph TB
     A[👤 User Request] --> B[🔍 requirement-analyzer]
 
     B --> |"📦 Large (6+ files)"| C[📄 prd-creator]
-    B --> |"📦 Medium (3-5 files)"| D[📐 technical-designer]
+    B --> |"📦 Medium (3-5 files)"| CA[🔬 codebase-analyzer]
     B --> |"📦 Small (1-2 files)"| E[⚡ Direct Implementation]
 
-    C --> D
-    D --> DR[📋 document-reviewer]
+    C --> CA
+    CA --> D[📐 technical-designer]
+    D --> CV[✅ code-verifier]
+    CV --> DR[📋 document-reviewer]
     DR --> DS[🔄 design-sync]
     DS --> F[🧪 acceptance-test-generator]
     F --> G[📋 work-planner]
@@ -182,11 +184,12 @@ graph TB
 ### What Happens Behind the Scenes
 
 1. **Analysis** - Figures out how complex your task is
-2. **Planning** - Creates the right docs (PRD, UI Spec, Design Doc, work plan) based on complexity
-3. **Execution** - Specialized agents handle implementation autonomously
-4. **Quality** - Runs tests, checks types, fixes errors automatically
-5. **Review** - Makes sure everything matches the design
-6. **Done** - Reviewed, tested, ready to commit
+2. **Codebase Understanding** - Analyzes existing code to inform design decisions
+3. **Planning** - Creates the right docs (PRD, UI Spec, Design Doc, work plan) based on complexity
+4. **Execution** - Specialized agents handle implementation autonomously
+5. **Quality** - Runs tests, checks types, fixes errors automatically
+6. **Review** - Makes sure everything matches the design
+7. **Done** - Reviewed, tested, ready to commit
 
 ---
 
@@ -238,6 +241,7 @@ These agents work the same way whether you're building a REST API or a React app
 | Agent | What It Does |
 |-------|--------------|
 | **requirement-analyzer** | Figures out how complex your task is and picks the right workflow |
+| **codebase-analyzer** | Analyzes existing codebase before design to produce focused guidance for technical-designer |
 | **work-planner** | Breaks down design docs into actionable tasks |
 | **task-decomposer** | Splits work into small, commit-ready chunks |
 | **code-reviewer** | Checks your code against design docs to make sure nothing's missing |
@@ -270,6 +274,7 @@ These agents work the same way whether you're building a REST API or a React app
 | **ui-spec-designer** | Creates UI Specifications from PRD and optional prototype code |
 | **technical-designer-frontend** | Plans React component architecture and state management |
 | **task-executor-frontend** | Implements React components with Testing Library |
+| **code-verifier** | Validates consistency between documentation and code implementation |
 | **quality-fixer-frontend** | Handles React-specific tests, TypeScript checks, and builds |
 | **rule-advisor** | Picks the best coding rules for your current task |
 | **design-sync** | Verifies consistency across multiple Design Docs and detects conflicts |
@@ -428,12 +433,13 @@ claude-code-workflows/
 │   └── marketplace.json        # Manages both plugins
 │
 ├── agents/                     # Shared agents (symlinked by both plugins)
+│   ├── codebase-analyzer.md     # Pre-design codebase analysis
 │   ├── code-reviewer.md
+│   ├── code-verifier.md        # Design verification & reverse engineering
 │   ├── investigator.md         # Diagnosis workflow
 │   ├── verifier.md             # Diagnosis workflow
 │   ├── solver.md               # Diagnosis workflow
 │   ├── scope-discoverer.md     # Reverse engineering workflow
-│   ├── code-verifier.md        # Reverse engineering workflow
 │   ├── task-executor.md
 │   ├── technical-designer.md
 │   └── ...
