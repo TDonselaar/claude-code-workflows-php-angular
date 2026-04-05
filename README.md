@@ -20,7 +20,6 @@ This marketplace includes the following plugins:
 **Optional add-ons** (enhance core plugins):
 - **[claude-code-discover](https://github.com/shinpr/claude-code-discover)** - Turns feature ideas into evidence-backed PRDs
 - **[metronome](https://github.com/shinpr/metronome)** - Detects shortcut-taking behavior and nudges Claude to proceed step by step
-- **[dev-workflows-governance](https://github.com/francismiles1/dev-workflows-governance)** - Enforces TIDY stage and human signoff checkpoint before deployment
 - **[linear-prism](https://github.com/shinpr/linear-prism)** - Turns requirements into structured Linear tasks — validates before decomposing, so downstream design starts clean
 
 **Skills only** (for users with existing workflows):
@@ -76,15 +75,13 @@ Install both plugins to get the complete toolkit for backend and frontend work.
 The fullstack recipes create separate Design Docs per layer (backend + frontend), verify cross-layer consistency via design-sync, and route tasks to the appropriate executor based on filename patterns. See [Fullstack Workflow](#fullstack-workflow) for details.
 
 ### External Plugins
+
 ```bash
 # Install discover (product discovery before implementation)
 /plugin install discover@claude-code-workflows
 
 # Install metronome (prevents shortcut-taking behavior)
 /plugin install metronome@claude-code-workflows
-
-# Install dev-workflows-governance (TIDY stage + signoff checkpoint)
-/plugin install dev-workflows-governance@claude-code-workflows
 
 # Install linear-prism (requirements → Linear tasks with quality gates)
 /plugin install linear-prism@claude-code-workflows
