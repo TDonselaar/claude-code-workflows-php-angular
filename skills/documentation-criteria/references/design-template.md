@@ -123,6 +123,14 @@ Keywords determine test type and reduce ambiguity.
 |---------------|-----------|
 | [path:function] | [similar functionality / integration point / pattern reference] |
 
+### Fact Disposition Table
+
+One row per `codebase-analyzer.focusAreas` entry. This table is the single binding between existing-behavior facts and the design — other sections that describe existing behavior reference the row by Focus Area name.
+
+| Fact ID | Focus Area | Disposition | Rationale | Evidence |
+|---------|------------|-------------|-----------|----------|
+| [fact_id from focusAreas] | [area name from focusAreas] | preserve / transform / remove / out-of-scope | [for transform: state new outcome; for remove: state reason; for out-of-scope: state which scope boundary excludes it; for preserve: brief confirmation] | [evidence value carried verbatim from focusAreas] |
+
 ## Design
 
 ### Change Impact Map

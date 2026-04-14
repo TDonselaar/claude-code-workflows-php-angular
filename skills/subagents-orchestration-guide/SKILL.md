@@ -216,45 +216,20 @@ Criteria for timing when to call each agent:
 
 ## Basic Flow for Work Planning
 
-When receiving new features or change requests, start with requirement-analyzer.
-According to scale determination:
+Always start with requirement-analyzer, then select the minimum document flow required by scale and affected layers.
 
-### Large Scale (6+ Files) - 13 Steps (backend) / 15 Steps (frontend/fullstack)
+| Scale | Required flow |
+|-------|---------------|
+| Large | requirement-analyzer → PRD → PRD review → optional UI Spec → optional ADR → codebase-analyzer → Design Doc → code-verifier → document-reviewer → design-sync → acceptance-test-generator → work-planner → task-decomposer |
+| Medium | requirement-analyzer → codebase-analyzer → optional UI Spec → optional ADR → Design Doc → code-verifier → document-reviewer → design-sync → acceptance-test-generator → work-planner → task-decomposer |
+| Small | requirement-analyzer → work-planner → direct implementation |
 
-1. requirement-analyzer → Requirement analysis + Check existing PRD **[Stop]**
-2. prd-creator → PRD creation
-3. document-reviewer → PRD review **[Stop: PRD Approval]**
-4. **(frontend/fullstack only)** Ask user for prototype code → ui-spec-designer → UI Spec creation
-5. **(frontend/fullstack only)** document-reviewer → UI Spec review **[Stop: UI Spec Approval]**
-6. technical-designer → ADR creation (if architecture/technology/data flow changes)
-7. document-reviewer → ADR review (if ADR created) **[Stop: ADR Approval]**
-8. codebase-analyzer → Codebase analysis (pass requirement-analyzer output + PRD path)
-9. technical-designer → Design Doc creation (pass codebase-analyzer output as additional context)
-10. code-verifier → Verify Design Doc against existing code (doc_type: design-doc)
-11. document-reviewer → Design Doc review (pass code-verifier results as code_verification)
-12. design-sync → Consistency verification **[Stop: Design Doc Approval]**
-13. acceptance-test-generator → Test skeleton generation, pass to work-planner (*1)
-14. work-planner → Work plan creation **[Stop: Batch approval]**
-15. task-decomposer → Autonomous execution → Completion report
-
-### Medium Scale (3-5 Files) - 9 Steps (backend) / 11 Steps (frontend/fullstack)
-
-1. requirement-analyzer → Requirement analysis **[Stop]**
-2. codebase-analyzer → Codebase analysis (pass requirement-analyzer output)
-3. **(frontend/fullstack only)** Ask user for prototype code → ui-spec-designer → UI Spec creation
-4. **(frontend/fullstack only)** document-reviewer → UI Spec review **[Stop: UI Spec Approval]**
-5. technical-designer → Design Doc creation (pass codebase-analyzer output as additional context)
-6. code-verifier → Verify Design Doc against existing code (doc_type: design-doc)
-7. document-reviewer → Design Doc review (pass code-verifier results as code_verification)
-8. design-sync → Consistency verification **[Stop: Design Doc Approval]**
-9. acceptance-test-generator → Test skeleton generation, pass to work-planner (*1)
-10. work-planner → Work plan creation **[Stop: Batch approval]**
-11. task-decomposer → Autonomous execution → Completion report
-
-### Small Scale (1-2 Files) - 2 Steps
-
-1. work-planner → Simplified work plan creation **[Stop: Batch approval]**
-2. Direct implementation → Completion report
+Rules:
+- Large scale requires PRD before Design Doc creation
+- Frontend/fullstack flows add UI Spec before Design Doc creation
+- Fullstack layer sequencing is defined only in `references/monorepo-flow.md`
+- `design-sync` is required whenever multiple Design Docs exist
+- `task-decomposer` begins only after work-planner batch approval
 
 ## Autonomous Execution Mode
 
@@ -375,15 +350,29 @@ Register overall phases using TaskCreate. Update each phase with TaskUpdate as i
    - Compose commit messages from changeSummary
    - Explicitly integrate initial and additional requirements when requirements change
 
-   #### codebase-analyzer → technical-designer
+   ### Handoff Contracts
 
-   **Pass to codebase-analyzer**: requirement-analyzer JSON output, PRD path (if exists), original user requirements
-   **Pass to technical-designer**: codebase-analyzer JSON output as additional context in the Design Doc creation prompt. The designer uses `focusAreas`, `dataModel`, `dataTransformationPipelines`, and `qualityAssurance` to inform the Existing Codebase Analysis, Verification Strategy, and Quality Assurance Mechanisms sections.
+   #### HC-01: requirement-analyzer → codebase-analyzer
+   - Pass: `requirement_analysis`, `prd_path` (if exists), original user requirements
 
-   #### code-verifier → document-reviewer (Design Doc review)
+   #### HC-02: codebase-analyzer → technical-designer
+   - Pass: full codebase-analyzer JSON as additional context
+   - Required downstream uses:
+     - `focusAreas` → canonical disposition-target list for the Fact Disposition Table
+     - `dataModel`, `dataTransformationPipelines`, `qualityAssurance` → Existing Codebase Analysis / Verification Strategy / Quality Assurance sections
 
-   **Pass to code-verifier**: Design Doc path (doc_type: design-doc). `code_paths` is intentionally omitted — the verifier independently discovers code scope from the document.
-   **Pass to document-reviewer**: code-verifier JSON output as `code_verification` parameter.
+   #### HC-03: technical-designer → code-verifier
+   - Pass: Design Doc path (`doc_type: design-doc`)
+   - Do not pass `code_paths`; code-verifier discovers scope from the document
+
+   #### HC-04: code-verifier + codebase-analyzer → document-reviewer
+   - Pass: `code_verification` JSON and the same `codebase_analysis` JSON previously given to the designer
+   - Purpose: reviewer validates both discrepancy integration and Fact Disposition coverage against `focusAreas`
+
+   #### HC-05: code-verifier → next-layer technical-designer (fullstack only)
+   - Defined only for multi-layer fullstack flow in `references/monorepo-flow.md`
+   - Pass: prior-layer Design Doc path plus `prior_layer_verification`
+   - Use only `discrepancies[]` as known issues to address or escalate. Do not infer verified claims that are not explicitly present in the verifier output.
 
    #### technical-designer → work-planner
 
@@ -397,9 +386,7 @@ Register overall phases using TaskCreate. Update each phase with TaskUpdate as i
 
    Work-planner produces a Design-to-Plan Traceability table mapping each extracted item to covering task(s). Items without a covering task must be marked as `gap` with justification. Unjustified gaps are errors. Justified gaps require user confirmation before plan approval.
 
-   #### *1 acceptance-test-generator → work-planner
-
-   **Purpose**: Prepare information for work-planner to incorporate into work plan
+   #### HC-06: acceptance-test-generator → work-planner
 
    **Pass to acceptance-test-generator**:
    - Design Doc: [path]

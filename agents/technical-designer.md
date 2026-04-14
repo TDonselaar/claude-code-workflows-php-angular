@@ -87,6 +87,20 @@ Must be performed before Design Doc creation:
    - Record all inspected files and key functions in "Code Inspection Evidence" section of Design Doc
    - Each entry must state relevance (similar functionality / integration point / pattern reference)
 
+### Fact Disposition【Required when codebase-analyzer output is provided】
+
+For every entry in `codebase-analyzer.focusAreas`, produce one row in the Design Doc's "Fact Disposition Table" section:
+
+| Column | Content |
+|--------|---------|
+| Fact ID | The `fact_id` value from codebase-analyzer |
+| Focus Area | The `area` value from codebase-analyzer |
+| Disposition | One of: `preserve` / `transform` / `remove` / `out-of-scope` |
+| Rationale | For `transform`: state new outcome. For `remove`: state reason. For `out-of-scope`: state which scope boundary excludes it. For `preserve`: brief confirmation. |
+| Evidence | The `evidence` value from the focusArea (carried through verbatim) |
+
+The Fact Disposition Table is the single mechanism that binds existing-behavior facts to the design. Other Design Doc sections that describe existing behavior reference the corresponding Disposition Table row by Focus Area name.
+
 ### Data Representation Decision【Required】
 When the design introduces or significantly modifies data structures:
 
@@ -208,12 +222,16 @@ Document state definitions and transitions for stateful components.
 - **Requirements Analysis Results**: Requirements analysis results (scale determination, technical requirements, etc.)
 - **Codebase Analysis** (optional, from codebase analysis phase):
   - When provided, use as the primary source for the "Existing Codebase Analysis" section
+  - `focusAreas` → produce the Fact Disposition Table (one row per focusArea, with fact_id + disposition + rationale + evidence)
   - `existingElements` → populate Implementation Path Mapping and Code Inspection Evidence
   - `dataModel` → populate data-related sections (schema references, data contracts)
-  - `focusAreas` → prioritize investigation depth on flagged areas
   - `constraints` → incorporate into design constraints and assumptions
   - `dataTransformationPipelines` → populate Verification Strategy's Output Comparison section (each pipeline step must be covered by the comparison method)
   - Conduct additional investigation only for areas not covered by the analysis or flagged in `limitations`
+
+- **Prior-Layer Verification** (optional, fullstack flow only): When this Design Doc references contracts from a prior-layer Design Doc that has been verified by code-verifier, the verification result JSON is provided. Use it as follows:
+  - `discrepancies[]` → treat as known issues to resolve in this Design Doc, or escalate if out of scope for this layer
+  - Do not infer verified claims beyond what the verifier output states explicitly; use the prior-layer Design Doc itself as reference context, not as proof of verification coverage
 - **PRD**: PRD document (if exists)
 - **Documents to Create**: ADR, Design Doc, or both
 - **Existing Architecture Information**: 
@@ -291,6 +309,7 @@ Implementation sample creation checklist:
 - [ ] **Standards identification gate completed** (required)
 - [ ] **Quality assurance mechanisms identified with adopted/noted status** (required)
 - [ ] **Code inspection evidence recorded** (required)
+- [ ] **Fact Disposition Table covers every codebase-analyzer focusArea, each row with fact_id + disposition + rationale + evidence** (required when codebase-analyzer output is provided)
 - [ ] **Integration points enumerated with contracts** (required)
 - [ ] **Data contracts clarified** (required)
 - [ ] Architecture and data flow clearly expressed in diagrams

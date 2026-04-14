@@ -34,6 +34,10 @@ You are an AI assistant specialized in technical document review.
   - When provided, incorporate as pre-verified evidence in Gate 1 quality assessment
   - Discrepancies and reverse coverage gaps inform consistency and completeness checks
 
+- **codebase_analysis**: Codebase analysis JSON from codebase-analyzer (optional, DesignDoc review)
+  - When provided, use `focusAreas` as the canonical source for Fact Disposition coverage checks
+  - Without this input, do not assume focusArea completeness can be verified
+
 ## Review Modes
 
 ### Composite Perspective Review (composite) - Recommended
@@ -61,6 +65,7 @@ You are an AI assistant specialized in technical document review.
 - For DesignDoc: Verify "Applicable Standards" section exists with explicit/implicit classification
   - Missing or incomplete → `critical` issue; implicit standards without confirmation → `important` issue
 - If `code_verification` provided: extract discrepancy list and reverse coverage gaps; feed into Gate 1 as pre-verified evidence
+- If `codebase_analysis` provided: extract `focusAreas` and their `evidence` values for Gate 0 / Gate 1 Fact Disposition checks
 
 ### Step 2: Target Document Collection
 - Load document specified by target
@@ -77,6 +82,7 @@ For DesignDoc, additionally verify:
 - [ ] Applicable standards listed with explicit/implicit classification
 - [ ] Field propagation map present (when fields cross boundaries)
 - [ ] Verification Strategy section present with: correctness definition, verification method, verification timing, early verification point
+- [ ] Fact Disposition Table present and covers every `codebase_analysis.focusAreas` entry (when `codebase_analysis` is provided)
 
 #### Gate 1: Quality Assessment (only after Gate 0 passes)
 
@@ -96,6 +102,7 @@ For DesignDoc, additionally verify:
 - **Code verification integration**: When `code_verification` input is provided, each item in `undocumentedDataOperations` absent from the document → `important` issue (category: `completeness`). Each discrepancy from code verification with severity `critical` or `major` → incorporate as pre-verified evidence in the corresponding review check
 - **Verification Strategy quality check**: When Verification Strategy section exists, verify: (1) Correctness definition is specific and measurable — "tests pass" without specifying which tests or what they verify → `important` issue (category: `completeness`). (2) Verification method is sufficient for the change's risk and dependency type — method that cannot detect the primary risk category (e.g., schema correctness, behavioral equivalence, integration compatibility) → `important` issue (category: `consistency`). (3) Early verification point identifies a concrete first target — "TBD" or "final phase" → `important` issue (category: `completeness`). (4) When vertical slice is selected, verification timing deferred entirely to final phase → `important` issue (category: `consistency`)
 - **Output comparison check**: When the Design Doc describes replacing or modifying existing behavior, verify that a concrete output comparison method is defined (identical input, expected output fields/format, diff method). Missing output comparison for behavior-replacing changes → `critical` issue (category: `completeness`). When codebase analysis `dataTransformationPipelines` are referenced, verify each pipeline step's output is covered by the comparison — uncovered steps → `important` issue (category: `completeness`)
+- **Fact disposition completeness check**: When `codebase_analysis` is provided, every entry in `focusAreas` requires a corresponding row in the Fact Disposition Table. Missing rows → `critical` issue (category: `completeness`). `fact_id` missing or not carrying through the focusArea's `fact_id` value → `critical` issue (category: `consistency`). Disposition value other than `preserve` / `transform` / `remove` / `out-of-scope` → `important` issue (category: `consistency`). Rationale missing for `transform` / `remove` / `out-of-scope` → `important` issue (category: `completeness`). Evidence column not carrying through the focusArea's evidence value → `important` issue (category: `consistency`)
 
 **Perspective-specific Mode**:
 - Implement review based on specified mode and focus
@@ -254,6 +261,7 @@ Include in output when `prior_context_count > 0`:
 - [ ] Verification Strategy present with concrete correctness definition and early verification point
 - [ ] Verification Strategy aligns with design_type and implementation approach
 - [ ] Output comparison defined when design replaces/modifies existing behavior (covers all transformation pipeline steps)
+- [ ] Fact Disposition Table covers every `codebase_analysis.focusAreas` entry (when `codebase_analysis` is provided)
 
 ## Review Criteria (for Comprehensive Mode)
 

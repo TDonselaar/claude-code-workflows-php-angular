@@ -75,7 +75,7 @@ For each file in `affectedFiles`:
    - File path and line number for each element
 4. **Map access patterns to schemas**: For each data access operation from Step 2, identify which schema it targets and what operation it performs (read, write, aggregate, join)
 
-### Step 4: Constraint and Assumption Extraction
+### Step 4: Constraint, Disposition Targets, and Assumption Extraction
 
 For each element discovered in Steps 2-3:
 
@@ -83,8 +83,9 @@ For each element discovered in Steps 2-3:
 2. **Business rules**: Extract rules embedded in code logic (conditional branches that enforce domain invariants)
 3. **Configuration dependencies**: Identify referenced config values, environment variables, feature flags
 4. **Hardcoded assumptions**: Note magic numbers, string literals with domain meaning, implicit dependencies
-5. **Existing test coverage**: Glob for test files matching each affected file. Record which elements have test coverage
-6. **Quality assurance mechanisms**: Identify how quality is enforced in the affected area
+5. **Disposition targets** (populated into `focusAreas`): Enumerate every existing fact within the change scope that the design must explicitly address. Group related facts into one focus area per coherent unit (e.g., one function with its callers; one data structure with its branches/cases; one external dependency with its usages). Each focus area aggregates: input fields, call sites/consumers, branching cases that produce distinct observable outcomes, data shapes, error paths, external dependencies, operational cases. Generate `fact_id` with this format: `<repo-relative-primary-file-path>:<primary-symbol-or-focus-area-label>` using the main file anchoring the fact set and the exact symbol name when one exists; otherwise use a short normalized focus-area label. Cardinality target: 5-15 entries for typical changes; group more aggressively if exceeding 20.
+6. **Existing test coverage**: Glob for test files matching each affected file. Record which elements have test coverage
+7. **Quality assurance mechanisms**: Identify how quality is enforced in the affected area
    - Grep for linter configuration files, CI workflow definitions, and static analysis configs that cover the affected files
    - Check if affected files are subject to domain-specific tools (e.g., schema validators, API spec validators, configuration file linters) by examining CI pipelines and pre-commit hooks
    - Identify domain-specific constraints (naming conventions, length limits, format requirements) from configuration files, CI checks, or documented standards
@@ -187,10 +188,11 @@ Return the JSON result as the final response. See Output Format for the schema.
   },
   "focusAreas": [
     {
-      "area": "Brief area name",
-      "reason": "Why the designer should pay attention to this",
-      "relatedFiles": ["path/to/file1"],
-      "risk": "What could go wrong if this is overlooked in the design"
+      "fact_id": "src/auth/createUser.ts:createUser",
+      "area": "Brief area name (one coherent unit of existing facts)",
+      "evidence": "existingElements[name=X] | constraints[location=file:line] | file:line",
+      "factsToAddress": "Concrete facts the designer must address (e.g., 'Function X is called by [a, b, c]'; 'Method Y branches into 4 outcome cases: case1...case4'; 'Field Z accepts values [v1, v2, v3]')",
+      "risk": "What goes wrong if these facts are omitted or contradicted by the design"
     }
   ],
   "testCoverage": {
@@ -213,7 +215,7 @@ Return the JSON result as the final response. See Output Format for the schema.
 - [ ] Extracted constraints with file:line evidence
 - [ ] Identified quality assurance mechanisms (linters, CI checks, domain-specific validators) covering affected files
 - [ ] Recorded domain-specific constraints (naming, length, format) from configuration or CI
-- [ ] Generated focus areas with risk descriptions
+- [ ] Generated focus areas as disposition targets (each entry aggregates a coherent unit of existing facts the designer must address; cardinality consolidated to ≤ ~15)
 - [ ] Checked test coverage for discovered elements
 - [ ] Final response is the JSON output
 
@@ -222,7 +224,7 @@ Return the JSON result as the final response. See Output Format for the schema.
 - [ ] All file paths verified to exist using Glob/Read
 - [ ] All signatures and names transcribed exactly from code (no normalization or correction)
 - [ ] Schema field names match actual definitions (not inferred from similar tables)
-- [ ] Each focus area cites specific files and concrete risks
+- [ ] Each focus area includes a stable `fact_id`, cites `evidence` (file:line or `existingElements`/`constraints` reference), enumerates `factsToAddress`, and states the `risk` of omission
 - [ ] `dataModel.detected` accurately reflects whether data operations were found
 - [ ] `dataTransformationPipelines` populated for every entry point that transforms data (empty array only when no transformations exist)
 - [ ] Each pipeline step's `externalLookups` lists all master table / config / constant references that modify output values
