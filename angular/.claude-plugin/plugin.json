@@ -1,0 +1,25 @@
+{
+  "name": "dev-workflows-angular",
+  "version": "0.1.0",
+  "description": "Skills + Subagents for Angular 18 + Material/PrimeNG + Karma/Jasmine - Use with dev-workflows backend recipes, or the dev-workflows-gitlab orchestration",
+  "author": {
+    "name": "TDonselaar"
+  },
+  "license": "MIT",
+  "keywords": [
+    "angular",
+    "typescript",
+    "material",
+    "primeng",
+    "karma",
+    "jasmine",
+    "workflows",
+    "sub-agents"
+  ],
+  "agents": [
+    "./agents/technical-designer-angular.md",
+    "./agents/task-executor-angular.md",
+    "./agents/quality-fixer-angular.md",
+    "./agents/ui-spec-designer-angular.md"
+  ]
+}

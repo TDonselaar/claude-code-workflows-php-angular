@@ -1,0 +1,22 @@
+{
+  "name": "dev-workflows-flutter",
+  "version": "0.1.0",
+  "description": "Skills + Subagents for Flutter + Riverpod + FVM - Use with dev-workflows backend recipes, or the dev-workflows-gitlab orchestration",
+  "author": {
+    "name": "TDonselaar"
+  },
+  "license": "MIT",
+  "keywords": [
+    "flutter",
+    "dart",
+    "riverpod",
+    "fvm",
+    "workflows",
+    "sub-agents"
+  ],
+  "agents": [
+    "./agents/technical-designer-flutter.md",
+    "./agents/task-executor-flutter.md",
+    "./agents/quality-fixer-flutter.md"
+  ]
+}

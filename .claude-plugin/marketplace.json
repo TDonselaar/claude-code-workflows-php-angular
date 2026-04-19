@@ -1,57 +1,76 @@
 {
-  "name": "claude-code-workflows",
-  "owner": {
-    "name": "Shinsuke Kagawa",
-    "url": "https://github.com/shinpr"
-  },
-  "metadata": {
-    "description": "Skills + Subagents for Claude Code - Progressive skills for quick wins, orchestrated agents for full agentic coding"
-  },
-  "plugins": [
-    {
-      "name": "dev-workflows",
-      "source": "./backend",
-      "description": "Skills + Subagents for backend development - Use skills for coding guidance, or run recipe workflows for full orchestrated agentic coding with specialized agents"
+    "name": "claude-code-workflows",
+    "owner": {
+        "name": "Shinsuke Kagawa",
+        "url": "https://github.com/shinpr"
     },
-    {
-      "name": "dev-workflows-frontend",
-      "source": "./frontend",
-      "description": "Skills + Subagents for React/TypeScript - Use skills for coding guidance, or run recipe workflows for full orchestrated agentic coding with specialized agents"
+    "metadata": {
+        "description": "Skills + Subagents for Claude Code - Progressive skills for quick wins, orchestrated agents for full agentic coding"
     },
-    {
-      "name": "dev-skills",
-      "source": "./skills-only",
-      "description": "Lightweight skills for users with existing workflows - coding best practices, testing principles, and design guidelines without recipe workflows or agents"
-    },
-    {
-      "name": "metronome",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/shinpr/metronome.git"
-      },
-      "description": "Detects shortcut-taking behavior and guides Claude to follow procedures step by step",
-      "category": "behavior-control",
-      "homepage": "https://github.com/shinpr/metronome"
-    },
-    {
-      "name": "discover",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/shinpr/claude-code-discover.git"
-      },
-      "description": "Turns feature ideas into evidence-backed PRDs through structured discovery, 4 Risks assessment, and validation workflows",
-      "category": "product-quality",
-      "homepage": "https://github.com/shinpr/claude-code-discover"
-    },
-    {
-      "name": "linear-prism",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/shinpr/linear-prism.git"
-      },
-      "description": "Turns requirements into structured Linear tasks — validates before decomposing, so downstream design starts clean",
-      "category": "workflow-orchestration",
-      "homepage": "https://github.com/shinpr/linear-prism"
-    }
-  ]
+    "plugins": [{
+            "name": "dev-workflows",
+            "source": "./backend",
+            "description": "Skills + Subagents for backend development - Use skills for coding guidance, or run recipe workflows for full orchestrated agentic coding with specialized agents"
+        },
+        {
+            "name": "dev-workflows-frontend",
+            "source": "./frontend",
+            "description": "Skills + Subagents for React/TypeScript - Use skills for coding guidance, or run recipe workflows for full orchestrated agentic coding with specialized agents"
+        },
+        {
+            "name": "dev-skills",
+            "source": "./skills-only",
+            "description": "Lightweight skills for users with existing workflows - coding best practices, testing principles, and design guidelines without recipe workflows or agents"
+        },
+        {
+            "name": "dev-workflows-laravel",
+            "source": "./laravel",
+            "description": "Skills + Subagents for Laravel 12 + Doctrine ORM (SQL) + Doctrine ODM (MongoDB) + Pest - use alongside dev-workflows"
+        },
+        {
+            "name": "dev-workflows-angular",
+            "source": "./angular",
+            "description": "Skills + Subagents for Angular 18 + Material/PrimeNG + Karma/Jasmine - use alongside dev-workflows"
+        },
+        {
+            "name": "dev-workflows-flutter",
+            "source": "./flutter",
+            "description": "Skills + Subagents for Flutter + Riverpod + FVM - use alongside dev-workflows"
+        },
+        {
+            "name": "dev-workflows-gitlab",
+            "source": "./gitlab",
+            "description": "GitLab-driven orchestration - pick up work items and issues, route to Laravel/Angular/Flutter stack plugins, communicate via comments"
+        },
+        {
+            "name": "metronome",
+            "source": {
+                "source": "url",
+                "url": "https://github.com/shinpr/metronome.git"
+            },
+            "description": "Detects shortcut-taking behavior and guides Claude to follow procedures step by step",
+            "category": "behavior-control",
+            "homepage": "https://github.com/shinpr/metronome"
+        },
+        {
+            "name": "discover",
+            "source": {
+                "source": "url",
+                "url": "https://github.com/shinpr/claude-code-discover.git"
+            },
+            "description": "Turns feature ideas into evidence-backed PRDs through structured discovery, 4 Risks assessment, and validation workflows",
+            "category": "product-quality",
+            "homepage": "https://github.com/shinpr/claude-code-discover"
+        },
+        {
+            "name": "linear-prism",
+            "source": {
+                "source": "url",
+                "url": "https://github.com/shinpr/linear-prism.git"
+            },
+            "description": "Turns requirements into structured Linear tasks — validates before decomposing, so downstream design starts clean",
+            "category": "workflow-orchestration",
+            "homepage": "https://github.com/shinpr/linear-prism"
+        }
+    ]
 }

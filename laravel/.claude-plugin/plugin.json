@@ -1,0 +1,23 @@
+{
+  "name": "dev-workflows-laravel",
+  "version": "0.1.0",
+  "description": "Skills + Subagents for Laravel + Doctrine (SQL+ODM) + Pest - Use with dev-workflows backend recipes, or the dev-workflows-gitlab orchestration",
+  "author": {
+    "name": "TDonselaar"
+  },
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "php",
+    "doctrine",
+    "mongodb",
+    "pest",
+    "workflows",
+    "sub-agents"
+  ],
+  "agents": [
+    "./agents/technical-designer-laravel.md",
+    "./agents/task-executor-laravel.md",
+    "./agents/quality-fixer-laravel.md"
+  ]
+}

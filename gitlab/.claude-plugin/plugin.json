@@ -1,0 +1,20 @@
+{
+  "name": "dev-workflows-gitlab",
+  "version": "0.1.0",
+  "description": "GitLab-driven agent flow - pick up work items and issues from GitLab, execute via stack plugins (Laravel/Angular/Flutter), communicate progress via work-item and issue comments",
+  "author": {
+    "name": "TDonselaar"
+  },
+  "license": "MIT",
+  "keywords": [
+    "gitlab",
+    "workflow-orchestration",
+    "work-items",
+    "issues",
+    "sub-agents"
+  ],
+  "agents": [
+    "./agents/scope-classifier.md",
+    "./agents/bug-reproducer.md"
+  ]
+}

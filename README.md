@@ -89,6 +89,14 @@ The fullstack recipes create separate Design Docs per layer (backend + frontend)
 /plugin install linear-prism@claude-code-workflows
 ```
 
+### GitLab-Driven Plugin (Optional)
+
+The `dev-workflows-gitlab` plugin and its stack companions (`dev-workflows-laravel`, `dev-workflows-angular`, `dev-workflows-flutter`) orchestrate end-to-end work-item and issue flows from GitLab. They call the GitLab Duo MCP server via tools prefixed `mcp__<uuid>__...`.
+
+**Before using, replace the MCP UUID.** The placeholder `55347110-1326-4bad-953f-d8fd59b0c0b6` in `gitlab/skills/gitlab-client/SKILL.md`, `gitlab/skills/recipe-gitlab-workitem/SKILL.md`, and `gitlab/skills/recipe-gitlab-issue/SKILL.md` must be swapped for your own GitLab Duo MCP registration UUID. Find yours by running `/mcp` in Claude Code and looking for the tool prefix on the `gitlab` server — it has the form `mcp__<uuid>__get_mcp_server_version`. Do a repo-wide find/replace before installing.
+
+See [GitLab MCP server tools](https://docs.gitlab.com/user/gitlab_duo/model_context_protocol/mcp_server_tools/) for setup of the MCP server itself.
+
 ### Skills Only (For Users with Existing Workflows)
 
 If you already have your own orchestration (custom prompts, scripts, CI-driven loops) and just want the best-practice guides, use `dev-skills`. If you want Claude to plan, execute, and verify end-to-end, install `dev-workflows` instead.
